@@ -1,0 +1,5 @@
+BASE_URL = 'https://stellarburgers.nomoreparties.site'
+FEED_URL = 'https://stellarburgers.nomoreparties.site/feed'
+HISTORY_URL = 'https://stellarburgers.nomoreparties.site/account/order-history'
+LOGIN_FORM_URL = 'https://stellarburgers.nomoreparties.site/login'
+ACCOUNT_PROFILE_URL = 'https://stellarburgers.nomoreparties.site/account/profile'
