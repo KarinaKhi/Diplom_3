@@ -17,7 +17,7 @@ class TestOrderFeed:
         page.navigate_to_order_feed()
         page.click_first_order()
         assert page.find_element(
-            OrderFeedPageLocators.ORDER_DETAILS_MODAL_2), "Модальное окно с деталями заказа не открылось."
+            OrderFeedPageLocators.ORDER_DETAILS_MODAL), "Модальное окно с деталями заказа не открылось."
 
     @allure.title("Отображение заказов из 'Истории заказов' в 'Ленте заказов'")
     def test_orders_in_history_appear_in_feed(self, driver, open_main_page):
@@ -28,7 +28,7 @@ class TestOrderFeed:
         page = MainFunctionalityPage(driver)
         page.add_ingredient_to_order(MainFunctionalityPageLocators.FLUORESCENT_BUN)
         page.click_on_order_button()
-        created_order_number = page.get_created_orger_number()
+        created_order_number = page.get_created_order_number()
         created_order_number_text = f"#0{created_order_number}"
         page.close_modal_window()
         page = PersonalAccountPage(driver)
@@ -86,7 +86,7 @@ class TestOrderFeed:
         page = MainFunctionalityPage(driver)
         page.add_ingredient_to_order(MainFunctionalityPageLocators.FLUORESCENT_BUN)
         page.click_on_order_button()
-        created_order_number = page.get_created_orger_number()
+        created_order_number = page.get_created_order_number()
         created_order_number_text = f"0{created_order_number}"
         page.close_modal_window()
         page = OrderFeedPage(driver)

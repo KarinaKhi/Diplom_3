@@ -1,6 +1,5 @@
 import time
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.wait import WebDriverWait
 from locators.main_functionality_locators import MainFunctionalityPageLocators
 from pages.base_page import BasePage
 from locators.order_feed_page_locators import OrderFeedPageLocators
@@ -8,7 +7,7 @@ from locators.order_feed_page_locators import OrderFeedPageLocators
 
 class OrderFeedPage(BasePage):
     def navigate_to_order_feed(self):
-        WebDriverWait(self.driver, 20).until(
+        self.wait_driver.until(
             EC.invisibility_of_element_located(MainFunctionalityPageLocators.OVERLAYER_FOR_ORDERS)
         )
         self.click_element(OrderFeedPageLocators.ORDER_FEED_SECTION)
@@ -18,7 +17,7 @@ class OrderFeedPage(BasePage):
         self.click_element(OrderFeedPageLocators.FIRST_ORDER)
 
     def get_all_orders(self):
-        WebDriverWait(self.driver, 20).until(
+        self.wait_driver.until(
             EC.invisibility_of_element_located(MainFunctionalityPageLocators.OVERLAYER_FOR_ORDERS)
         )
         counter = self.find_element(OrderFeedPageLocators.ORDERS_LIST)
@@ -37,5 +36,5 @@ class OrderFeedPage(BasePage):
         return orders_set
 
     def get_counter_value(self, locator):
-        element = self.find_element(locator)
+        element = self.wait_driver.until(EC.visibility_of_element_located(locator))
         return int(element.text.strip())

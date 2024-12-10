@@ -2,13 +2,12 @@ from selenium.webdriver.common.by import By
 
 
 class OrderFeedPageLocators:
-    ORDER_FEED_SECTION = (By.XPATH, '//*[@id="root"]/div/header/nav/ul/li[2]/a/p')
-    ORDERS_LIST = (By.XPATH, '/html/body/div/div/main/div/div/ul')
-    FIRST_ORDER = (By.XPATH, '/html/body/div/div/main/div/div/ul/li[1]/a')
-    ORDER_DETAILS_MODAL_2 = (By.XPATH, '//*[@id="root"]/div/section[2]/div[1]')
-    BOX_WITH_NUMBER_IN_WORK = (By.XPATH, '/html/body/div/div/main/div/div/div/div[1]/ul[2]')
+    ORDER_FEED_SECTION = (By.XPATH, "//p[text()='Лента Заказов']")
+    ORDERS_LIST = (By.XPATH, "//*[@class='OrderFeed_list__OLh59']")
     COUNTER_ALL_TIME = (
-        By.XPATH, "/html/body/div/div/main/div/div/div/div[2]/p[2]")
+        By.XPATH, "//div[.//p[text()='Выполнено за все время:']]//p[contains(@class, 'OrderFeed_number')]")
     COUNTER_TODAY = (
-        By.XPATH, "/html/body/div/div/main/div/div/div/div[3]/p[2]")
-    CROSS_BUTTON = (By.XPATH, '/html/body/div/div/section[2]/div[1]/button')
+        By.XPATH, "//div[.//p[contains(text(), 'Выполнено за сегодня:')]]//p[contains(@class, 'OrderFeed_number')]")
+    BOX_WITH_NUMBER_IN_WORK = (By.XPATH, "//*[contains(@class, 'OrderFeed_orderListReady')]")
+    ORDER_DETAILS_MODAL = (By.XPATH, "//*[contains(@class, 'Modal_orderBox__1xWdi')]")
+    FIRST_ORDER = (By.XPATH, "(//li[contains(@class, 'OrderHistory_listItem__2x95r')]//a)[1]")

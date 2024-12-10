@@ -1,6 +1,5 @@
 from selenium.common import TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.wait import WebDriverWait
 from locators.main_functionality_locators import MainFunctionalityPageLocators
 from pages.base_page import BasePage
 
@@ -20,18 +19,18 @@ class ValidCreateOrderRender(object):
 
 class MainFunctionalityPage(BasePage):
     def click_on_constructor_button(self):
-        WebDriverWait(self.driver, 20).until(
+        self.wait_driver.until(
             EC.invisibility_of_element_located(MainFunctionalityPageLocators.OVERLAYER_FOR_ORDERS)
         )
-        WebDriverWait(self.driver, 20).until(
+        self.wait_driver.until(
             EC.visibility_of_element_located(MainFunctionalityPageLocators.CONSTRUCTOR_BUTTON))
-        WebDriverWait(self.driver, 20).until(
+        self.wait_driver.until(
             EC.element_to_be_clickable(MainFunctionalityPageLocators.CONSTRUCTOR_BUTTON))
         self.click_element(MainFunctionalityPageLocators.CONSTRUCTOR_BUTTON)
 
     def click_on_order_feed_button(self):
         self.scroll_into_view(MainFunctionalityPageLocators.ORDER_FEED)
-        WebDriverWait(self.driver, 20).until(
+        self.wait_driver.until(
             EC.element_to_be_clickable(MainFunctionalityPageLocators.ORDER_FEED))
         self.click_element(MainFunctionalityPageLocators.ORDER_FEED)
 
@@ -41,18 +40,17 @@ class MainFunctionalityPage(BasePage):
     def click_on_order_button(self):
         self.click_element(MainFunctionalityPageLocators.ORDER_BUTTON)
 
-    def get_created_orger_number(self):
-        WebDriverWait(self.driver, 20).until(
+    def get_created_order_number(self):
+        self.wait_driver.until(
             EC.invisibility_of_element_located(MainFunctionalityPageLocators.OVERLAYER_FOR_ORDERS)
         )
-
-        counter = WebDriverWait(self.driver, 20).until(
+        counter = self.wait_driver.until(
             ValidCreateOrderRender(MainFunctionalityPageLocators.CREATED_ORDER_NUMBER)
         )
         return counter.text
 
     def close_modal_window(self):
-        WebDriverWait(self.driver, 10).until(
+        self.wait_driver.until(
             EC.element_to_be_clickable(MainFunctionalityPageLocators.CROSS_BUTTON))
         self.click_element(MainFunctionalityPageLocators.CROSS_BUTTON)
 
@@ -64,11 +62,11 @@ class MainFunctionalityPage(BasePage):
             return False
 
     def add_ingredient_to_order(self, ingredient_locator):
-        ingredient = WebDriverWait(self.driver, 10).until(
+        ingredient = self.wait_driver.until(
             EC.visibility_of_element_located(ingredient_locator)
         )
         self.scroll_into_view(ingredient_locator)
-        order_constructor = WebDriverWait(self.driver, 10).until(
+        order_constructor = self.wait_driver.until(
             EC.visibility_of_element_located(MainFunctionalityPageLocators.ORDER_CONSTRUCTOR)
         )
         self.scroll_into_view(MainFunctionalityPageLocators.ORDER_CONSTRUCTOR)
@@ -88,7 +86,6 @@ class MainFunctionalityPage(BasePage):
             };
             return event;
         }
-
         function dispatchEvent(element, event, transferData) {
             if (transferData !== undefined) {
                 event.dataTransfer = transferData;
@@ -99,7 +96,6 @@ class MainFunctionalityPage(BasePage):
                 element.fireEvent("on" + event.type, event);
             }
         }
-
         function simulateDragAndDrop(source, target) {
             var dragStartEvent = createEvent('dragstart');
             dispatchEvent(source, dragStartEvent);
@@ -110,17 +106,18 @@ class MainFunctionalityPage(BasePage):
             var dragEndEvent = createEvent('dragend');
             dispatchEvent(source, dragEndEvent, dropEvent.dataTransfer);
         }
-
         simulateDragAndDrop(arguments[0], arguments[1]);
         """
-
         self.driver.execute_script(drag_drop_script, ingredient, order_constructor)
 
     def is_modal_window_closed(self):
         try:
-            WebDriverWait(self.driver, 10).until(
-                EC.invisibility_of_element_located(MainFunctionalityPageLocators.MODAL_WINDOW)
+            self.wait_driver.until(
+                EC.invisibility_of_element_located(MainFunctionalityPageLocators.MODAL_WINDOW_INGREDIENT)
             )
             return True
         except TimeoutException:
             return False
+
+    def wait_for_url_upd(self, locator):
+        self.wait_driver.until(EC.url_contains(locator))

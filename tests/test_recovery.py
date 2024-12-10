@@ -14,7 +14,6 @@ class TestPasswordRecovery:
         assert driver.find_element(
             *RecoveryPageLocators.RECOVERY_BUTTON_AFTER_EMAIL_INPUT).is_displayed(), \
             "Страница восстановления пароля не открылась"
-        page.click_recovery_button_after_email_input()
 
     @allure.title("Ввод почты и клик по кнопке восстановления")
     def test_enter_email_and_submit(self, driver, open_main_page):

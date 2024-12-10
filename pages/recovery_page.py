@@ -1,4 +1,3 @@
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from pages.base_page import BasePage
 from locators.recovery_page_locators import RecoveryPageLocators
@@ -6,7 +5,7 @@ from locators.recovery_page_locators import RecoveryPageLocators
 
 class RecoveryPage(BasePage):
     def click_login_button_personal_account(self):
-        WebDriverWait(self.driver, 20).until(
+        self.wait_driver.until(
             EC.element_to_be_clickable(RecoveryPageLocators.PERSONAL_ACCOUNT_BUTTON)
         )
         self.click_element(RecoveryPageLocators.PERSONAL_ACCOUNT_BUTTON)
@@ -24,9 +23,10 @@ class RecoveryPage(BasePage):
         self.driver.find_element(*RecoveryPageLocators.RECOVERY_BUTTON_AFTER_EMAIL_INPUT).click()
 
     def click_show_password(self):
-        WebDriverWait(self.driver, 20).until(
+        self.wait_driver.until(
             EC.element_to_be_clickable(RecoveryPageLocators.SHOW_PASSWORD_BUTTON)
         )
+        self.click_element(RecoveryPageLocators.SHOW_PASSWORD_BUTTON)
 
     def is_password_field_active(self):
         password_field = self.wait_for_element_to_be_visible(RecoveryPageLocators.PASSWORD_FIELD)

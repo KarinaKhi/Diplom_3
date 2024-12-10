@@ -1,5 +1,3 @@
-from selenium.common import TimeoutException
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from pages.base_page import BasePage
 from locators.personal_account_page_locators import PersonalAccountPageLocators
@@ -10,18 +8,18 @@ class PersonalAccountPage(BasePage):
     def go_to_personal_account(self):
         self.wait_for_overlay_to_disappear()
         self.scroll_into_view(PersonalAccountPageLocators.LOGIN_BUTTON_PERSONAL_ACCOUNT)
-        WebDriverWait(self.driver, 10).until(
+        self.wait_driver.until(
             EC.element_to_be_clickable(PersonalAccountPageLocators.LOGIN_BUTTON_PERSONAL_ACCOUNT)
         )
         self.click_element(PersonalAccountPageLocators.LOGIN_BUTTON_PERSONAL_ACCOUNT)
 
     def enter_user_credentials(self, email, password):
-        email_input = WebDriverWait(self.driver, 10).until(
+        email_input = self.wait_driver.until(
             EC.element_to_be_clickable(PersonalAccountPageLocators.EMAIL_INPUT_LOGIN_MAIN_PAGE)
         )
         email_input.click()
         email_input.send_keys(email)
-        password_input = WebDriverWait(self.driver, 10).until(
+        password_input = self.wait_driver.until(
             EC.element_to_be_clickable(PersonalAccountPageLocators.PASSWORD_INPUT_LOGIN_MAIN_PAGE)
         )
         password_input.click()
@@ -33,7 +31,7 @@ class PersonalAccountPage(BasePage):
     def go_to_orders_history(self):
         self.wait_for_overlay_to_disappear()
         self.scroll_into_view(PersonalAccountPageLocators.ORDERS_HISTORY)
-        WebDriverWait(self.driver, 15).until(
+        self.wait_driver.until(
             EC.element_to_be_clickable(PersonalAccountPageLocators.ORDERS_HISTORY)
         )
         self.click_element(PersonalAccountPageLocators.ORDERS_HISTORY)
@@ -46,15 +44,18 @@ class PersonalAccountPage(BasePage):
 
     def logout(self):
         self.wait_for_overlay_to_disappear()
-        WebDriverWait(self.driver, 10).until(
+        self.wait_driver.until(
             EC.visibility_of_element_located(PersonalAccountPageLocators.LOGOUT_BUTTON)
         )
-        element = WebDriverWait(self.driver, 10).until(
+        element = self.wait_driver.until(
             EC.element_to_be_clickable(PersonalAccountPageLocators.LOGOUT_BUTTON)
         )
         element.click()
 
     def wait_for_overlay_to_disappear(self):
-        WebDriverWait(self.driver, 15).until(
+        self.wait_driver.until(
             EC.invisibility_of_element_located(PersonalAccountPageLocators.OVERLAYER_FOR_ORDERS)
         )
+
+    def wait_for_url_upd(self, locator):
+        self.wait_driver.until(EC.url_contains(locator))

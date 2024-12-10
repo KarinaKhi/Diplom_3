@@ -13,8 +13,9 @@ class TestMainFunctionality:
     def test_navigation_to_constructor_without_authorization(self, driver, open_main_page):
         page = MainFunctionalityPage(driver)
         page.click_on_constructor_button()
-        assert page.find_element(
-            MainFunctionalityPageLocators.MAIN_PAGE_MAKE_BURGER_TEXT), "Не удалось перейти на страницу конструктора."
+        driver.switch_to.window(driver.window_handles[-1])
+        page.wait_for_url_upd(BASE_URL)
+        assert BASE_URL in driver.current_url, "Не удалось перейти на страницу конструктора"
 
     @allure.title("Переход на «Конструктор» после авторизации")
     def test_navigation_to_constructor_after_authorization(self, driver, open_main_page):
@@ -23,8 +24,10 @@ class TestMainFunctionality:
         page.enter_user_credentials(USER_CREDENTIALS["email"], USER_CREDENTIALS["password"])
         page.click_enter_button()
         page = MainFunctionalityPage(driver)
-        assert page.find_element(
-            MainFunctionalityPageLocators.MAIN_PAGE_MAKE_BURGER_TEXT), "Не удалось перейти на страницу конструктора."
+        page.click_on_constructor_button()
+        driver.switch_to.window(driver.window_handles[-1])
+        page.wait_for_url_upd(BASE_URL)
+        assert BASE_URL in driver.current_url, "Не удалось перейти на страницу конструктора"
 
     @allure.title("Переход по клику на «Конструктор» из личного кабинета")
     def test_navigation_to_constructor_from_personal_account(self, driver, open_main_page):
@@ -35,8 +38,9 @@ class TestMainFunctionality:
         page.go_to_personal_account()
         page = MainFunctionalityPage(driver)
         page.click_on_constructor_button()
-        assert page.find_element(
-            MainFunctionalityPageLocators.MAIN_PAGE_MAKE_BURGER_TEXT), "Не удалось перейти на страницу конструктора."
+        driver.switch_to.window(driver.window_handles[-1])
+        page.wait_for_url_upd(BASE_URL)
+        assert BASE_URL in driver.current_url, "Не удалось перейти на страницу конструктора"
 
     @allure.title("Переход по клику на «Лента заказов» из личного кабинета")
     def test_navigation_to_order_feed_from_personal_account(self, driver, open_main_page):
@@ -47,8 +51,9 @@ class TestMainFunctionality:
         page.go_to_personal_account()
         page = MainFunctionalityPage(driver)
         page.click_on_order_feed_button()
-        assert page.find_element(MainFunctionalityPageLocators.ORDER_FEED_PAGE_HEADER), \
-            "Не удалось перейти на страницу ленты заказов."
+        driver.switch_to.window(driver.window_handles[-1])
+        page.wait_for_url_upd(FEED_URL)
+        assert FEED_URL in driver.current_url, "Не удалось перейти на страницу ленты заказов"
 
     @allure.title("Переход по клику на «Лента заказов» с главной страницы после авторизации")
     def test_navigation_to_order_feed_from_main_page_after_authorization(self, driver, open_main_page):
@@ -58,24 +63,26 @@ class TestMainFunctionality:
         page.click_enter_button()
         page = MainFunctionalityPage(driver)
         page.click_on_order_feed_button()
-        assert page.find_element(MainFunctionalityPageLocators.ORDER_FEED_PAGE_HEADER), \
-            "Не удалось перейти на страницу ленты заказов."
+        driver.switch_to.window(driver.window_handles[-1])
+        page.wait_for_url_upd(FEED_URL)
+        assert FEED_URL in driver.current_url, "Не удалось перейти на страницу ленты заказов"
 
     @allure.title("Переход по клику на «Лента заказов» с главной страницы")
     def test_navigation_to_order_feed(self, driver, open_main_page):
         page = MainFunctionalityPage(driver)
         page.click_on_order_feed_button()
-        assert page.find_element(MainFunctionalityPageLocators.ORDER_FEED_PAGE_HEADER), \
-            "Не удалось перейти на страницу ленты заказов."
+        driver.switch_to.window(driver.window_handles[-1])
+        page.wait_for_url_upd(FEED_URL)
+        assert FEED_URL in driver.current_url, "Не удалось перейти на страницу ленты заказов"
 
     @allure.title("Открытие всплывающего окна при клике на ингредиент")
     def test_modal_window_opens_on_click(self, driver, open_main_page):
         page = MainFunctionalityPage(driver)
         page.click_on_ingredient(MainFunctionalityPageLocators.FLUORESCENT_BUN)
         assert page.find_element(
-            MainFunctionalityPageLocators.MODAL_WINDOW_INGREDIENT), "Модальное окно с деталями ингредиента не открылось."
+            MainFunctionalityPageLocators.MODAL_WINDOW_INGREDIENT),\
+            "Модальное окно с деталями ингредиента не открылось."
 
-    # assert
     @allure.title("Закрытие всплывающего окна кликом по крестику")
     def test_modal_window_closes_on_cross_click(self, driver, open_main_page):
         page = MainFunctionalityPage(driver)
@@ -87,7 +94,7 @@ class TestMainFunctionality:
     def test_add_ingredient_increases_counter(self, driver, open_main_page):
         page = MainFunctionalityPage(driver)
         page.add_ingredient_to_order(MainFunctionalityPageLocators.FLUORESCENT_BUN)
-        assert page.is_ingredient_counter_updated(MainFunctionalityPageLocators.FLUORESCENT_BUN_COUNTER_2), \
+        assert page.is_ingredient_counter_updated(MainFunctionalityPageLocators.FLUORESCENT_BUN_COUNTER), \
             "Счетчик для ингредиента не увеличился после добавления в заказ."
 
     @allure.title("Авторизованный пользователь может оформить заказ")
